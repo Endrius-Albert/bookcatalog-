@@ -1,16 +1,14 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-class RootView(APIView):
-    def get(self, request):
-        return Response({"message": "Welcome to the BookCatalog API"})
-
 class HealthView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         return Response({"status": "ok"})
 
+health_view = HealthView.as_view()
+
 class BookView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         return Response({"hello": "django"})
 
+book_view = BookView.as_view()
