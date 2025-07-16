@@ -1,0 +1,38 @@
+name: Run tests and migrations checks
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install-dependencies
+
+      - name: Run pytest
+        run: pytest
+
+  migrations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install-dependencies
+
+      - name: Run django migrate
+        run: python manage.py migrate
+
+  migrations-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/install-dependencies
+
+      - name: Run makemigrations
+        run: python manage.py makemigrations --check
