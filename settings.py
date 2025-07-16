@@ -1,16 +1,14 @@
 from pathlib import Path
-from os import environ
+from environs import Env
 
+env = Env()
+env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-SECRET_KEY = 'django-insecure-your-secret-key'  
-
-
-DEBUG = environ.get('DEVELOPMENT_MODE') == 'true'
-
-ALLOWED_HOSTS = ['*']  
+DEBUG = env.bool("DEVELOPMENT_MODE", True)
+SECRET_KEY = env.str("SECRET_KEY", "django-insecure-your-fallback-key")
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,11 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'rest_framework',  
-    'api',             
+    'rest_framework',
+    'api',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -40,7 +36,7 @@ ROOT_URLCONF = 'bookcatalog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], 
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -55,27 +51,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bookcatalog.wsgi.application'
 
-
-if environ.get('DEVELOPMENT_MODE') == 'true':
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': environ.get('DATABASE_NAME'),
-            'USER': environ.get('DATABASE_USER'),
-            'PASSWORD': environ.get('DATABASE_PASSWORD'),
-            'HOST': environ.get('DATABASE_HOST'),
+            'NAME': env.str("DATABASE_NAME"),
+            'USER': env.str("DATABASE_USER"),
+            'PASSWORD': env.str("DATABASE_PASSWORD"),
+            'HOST': env.str("DATABASE_HOST"),
             'PORT': '5432',
         }
     }
 else:
-   
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
