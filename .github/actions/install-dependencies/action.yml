@@ -1,4 +1,6 @@
 name: "Install python and dependencies"
+description: "Set up Python and install dependencies from requirements.txt"
+
 runs:
   using: "composite"
   steps:
@@ -6,7 +8,7 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13'
-    
+
     - name: Install dependencies
       shell: bash
       run: |
