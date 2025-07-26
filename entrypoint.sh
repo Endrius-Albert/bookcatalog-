@@ -1,9 +1,11 @@
 #!/bin/sh
 
 echo "Waiting for the database..."
-while ! nc -z $DATABASE_HOST 5432; do
-    sleep 1
+
+while ! nc -z $DB_HOST $DB_PORT; do
+  sleep 1
 done
+
 echo "Database is ready"
 
 python manage.py migrate

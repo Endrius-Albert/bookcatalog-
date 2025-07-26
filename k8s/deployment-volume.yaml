@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: books-catalog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: books-catalog
+  template:
+    metadata:
+      labels:
+        app: books-catalog
+    spec:
+      containers:
+        - name: books-catalog
+          image: ghcr.io/endrius-albert/bookcatalog:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: db-secret
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: app-config
